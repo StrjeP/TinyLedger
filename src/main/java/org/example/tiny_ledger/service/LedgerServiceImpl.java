@@ -6,11 +6,14 @@ import org.example.tiny_ledger.ledger.TinyLedger;
 import org.example.tiny_ledger.ledger.Transaction;
 import org.example.tiny_ledger.ledger.TransactionStatus;
 
-public class MoneyMovementServiceImpl implements MoneyMovementService {
+import java.time.Instant;
+import java.util.Collection;
+
+public class LedgerServiceImpl implements LedgerService {
 
     private final TinyLedger ledger;
 
-    public MoneyMovementServiceImpl(TinyLedger ledger) {
+    public LedgerServiceImpl(TinyLedger ledger) {
         this.ledger = ledger;
     }
 
@@ -18,5 +21,20 @@ public class MoneyMovementServiceImpl implements MoneyMovementService {
         var transaction = new Transaction(this.ledger.getTime(), this.ledger.getId(), TransactionStatus.PENDING, request.action(), request.amount());
         var result = ledger.apply(transaction);
         return new MovementResponse(result.action(), result.amount(), result.id(), result.status().success());
+    }
+
+    @Override
+    public Double getBalance() {
+        return ledger.getBalance();
+    }
+
+    @Override
+    public Collection<Transaction> getTransactions() {
+        return ledger.getTransactions();
+    }
+
+    @Override
+    public Instant getTime() {
+        return ledger.getTime();
     }
 }

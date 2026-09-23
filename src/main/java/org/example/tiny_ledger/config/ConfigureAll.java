@@ -2,8 +2,8 @@ package org.example.tiny_ledger.config;
 
 import org.example.tiny_ledger.ledger.TinyLedger;
 import org.example.tiny_ledger.ledger.TinyLedgerInMemory;
-import org.example.tiny_ledger.service.MoneyMovementService;
-import org.example.tiny_ledger.service.MoneyMovementServiceImpl;
+import org.example.tiny_ledger.service.LedgerService;
+import org.example.tiny_ledger.service.LedgerServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,8 +23,8 @@ public class ConfigureAll {
     }
 
     @Bean
-    public MoneyMovementService getMoneyMovementService(TinyLedger tinyLedger) {
-        return new MoneyMovementServiceImpl(tinyLedger);
+    public LedgerService getMoneyMovementService(TinyLedger tinyLedger) {
+        return new LedgerServiceImpl(tinyLedger);
     }
 
 }

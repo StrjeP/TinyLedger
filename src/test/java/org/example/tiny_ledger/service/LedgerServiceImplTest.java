@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class MoneyMovementServiceImplTest {
+class LedgerServiceImplTest {
     private static Instant fixedInstant = Instant.parse("2026-09-22T18:32:12Z");
     private static Long id = 12345L;
 
@@ -33,7 +34,7 @@ class MoneyMovementServiceImplTest {
     @Test
     @DisplayName("happy path")
     void happyPathTest() {
-        var sut = new MoneyMovementServiceImpl(ledger);
+        var sut = new LedgerServiceImpl(ledger);
         var action = MovementAction.DEPOSIT;
         var amount = 123.12;
         var testRequest = new MovementRequest(action, amount);
@@ -54,4 +55,29 @@ class MoneyMovementServiceImplTest {
         assertEquals(action, capturedTransaction.action());
         assertEquals(amount, capturedTransaction.amount());
     }
+
+    @Test
+    @DisplayName("Test Delegation getBalance")
+    void delegateToLedger_getBalance() {
+        var sut = new LedgerServiceImpl(ledger);
+        sut.getBalance();
+        verify(ledger).getBalance();
+    }
+
+    @Test
+    @DisplayName("Test Delegation getTransactions")
+    void delegateToLedger_getTransactions() {
+        var sut = new LedgerServiceImpl(ledger);
+        sut.getTransactions();
+        verify(ledger).getTransactions();
+    }
+
+    @Test
+    @DisplayName("Test Delegation getTime")
+    void delegateToLedger_getTime() {
+        var sut = new LedgerServiceImpl(ledger);
+        sut.getTime();
+        verify(ledger).getTime();
+    }
+
 }
